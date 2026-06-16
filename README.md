@@ -441,8 +441,8 @@ python es_at_scale/train.py \
 | `--eval-freq` | `5` | Run evaluation every N iterations |
 | `--train-dataset` | `datasets/train/countdown` | Path to training DatasetDict on disk |
 | `--eval-dataset` | `datasets/evaluation_suite/countdown` | Path to evaluation DatasetDict on disk |
-| `--batch-size` | `512` | Number of prompts used to evaluate the current ES population at a given iteration (the reward signal for one weight update is computed over this many prompts) |
-| `--mini-batch-size` | `512` | How many of current batch each vLLM engine generates at once. A memory/throughput knob only — it does **not** change the ES update. See note below. |
+| `--batch-size` | `512` | Number of prompts/training samples used to evaluate each perturbed model (population member) at one ES iteration |
+| `--mini-batch-size` | `512` | How many prompts/training samples each vLLM engine processes at once. A memory/throughput knob only — it does **not** change the ES update. See note below. |
 | `--max-tokens` | `512` | Maximum tokens per generated response |
 | `--n-vllm-engines` | `8` | Number of vLLM engines (one per GPU recommended) |
 | `--n-gpu-per-vllm-engine` | `1` | GPUs per vLLM engine |
@@ -457,7 +457,7 @@ python es_at_scale/train.py \
 
 ### `--batch-size` vs. `--mini-batch-size`
 
-`--batch-size` is the number of prompts used to evaluate the current population at a given timestep — every population member sees the same prompts, and their average rewards are used for an iteration's weight update.
+`--batch-size` is the number of prompts/training samples used to evaluate each perturbed model (population member) at one ES iteration — every population member sees the same prompts, and the average reward over these prompts/training samples are used as the final reward for each population member.
 
 `--mini-batch-size` is a memory lever: it splits that fixed batch into sequential chunks run through each vLLM engine one at a time, so the full batch never has to fit in memory at once. Rewards are accumulated across chunks with size-weighting, so **it does not change the result** — only peak memory and speed. If rollout hits OOM (common with long `--max-tokens` or large models), lower it.
 
