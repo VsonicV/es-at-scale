@@ -8,7 +8,7 @@
 
 **ES-at-Scale** is an open-source framework for fine-tuning large language models using **Evolution Strategies (ES)** — a fully backpropagation-free, massively parallelizable alternative to RL-based training methods like PPO and GRPO.
 
-Model updates are computed from population-level reward signals, performing **direct optimization in the full parameter space**:
+ES-at-Scale performs **direct optimization in the full parameter space**:
 - **No backpropagation**
 - **No optimizer states**
 - **No activations stored**
@@ -180,7 +180,7 @@ datasets/
 
 The convenience loader in `train.py` uses HuggingFace `load_from_disk`, which expects a **`DatasetDict` saved to disk** — a folder containing a `dataset_dict.json` file plus one subfolder per split. Always point these flags at the folder that *contains* `dataset_dict.json`, **not** at an individual split subfolder.
 
-- `--train-dataset` — must be a `DatasetDict` folder. `train.py` iterates its splits to build the training DataLoader; conventionally there is a single split named `train`.
+- `--train-dataset` — must be a `DatasetDict` folder. The current implementation assumes there is only one split of the training dataset, so there should only be one single split named `train` inside the folder.
 - `--eval-dataset` — must be a `DatasetDict` folder. **Each split is evaluated separately** and reported under its split name (e.g. `eval/<split>/pass@1/mean`). This is how the math suite reports `amc`, `aime`, `math500`, `minerva`, and `olympiad_bench` individually.
 
 Create your own from raw data with `save_to_disk`:
@@ -496,10 +496,10 @@ Currently, there is no separate evaluation entry point — evaluation is run thr
 
 ```bash
 python es_at_scale/train.py \
-  --task math \
-  --model-name "Qwen/Qwen2.5-Math-7B" \
-  --eval-dataset "datasets/evaluation_suite/math/" \
-  --max-tokens 3000 \
+  --task countdown \
+  --model-name "Qwen/Qwen2.5-1.5B-Instruct" \
+  --eval-dataset "datasets/evaluation_suite/countdown" \
+  --max-tokens 512 \
   --n-iterations 0 \
   --n-vllm-engines 1 \
   --use-gpus "0" \
@@ -513,11 +513,11 @@ python es_at_scale/train.py \
 
 ```bash
 python es_at_scale/train.py \
-  --task math \
-  --model-name "Qwen/Qwen2.5-Math-7B" \
-  --checkpoint "experiments/<run>/checkpoint-es_fine_tuned_iteration_300/pytorch_model.pth" \
-  --eval-dataset "datasets/evaluation_suite/math/" \
-  --max-tokens 3000 \
+  --task countdown \
+  --model-name "Qwen/Qwen2.5-1.5B-Instruct" \
+  --checkpoint "experiments/<run>/checkpoint-es_fine_tuned_iteration_500/pytorch_model.pth" \
+  --eval-dataset "datasets/evaluation_suite/countdown" \
+  --max-tokens 512 \
   --n-iterations 0 \
   --n-vllm-engines 1 \
   --use-gpus "0" \
