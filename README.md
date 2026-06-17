@@ -159,7 +159,7 @@ python es_at_scale/train.py \
 | `--model-name` | `Qwen/Qwen2.5-1.5B-Instruct` | HuggingFace model ID or local path |
 | `--checkpoint` | — | Path to a `.pth` ES checkpoint to resume from |
 | `--sigma` | `0.001` | Noise scale for ES perturbations |
-| `--alpha` | `sigma/2` | Learning rate (pass `-1` to auto-set to `sigma/2`) |
+| `--alpha` | `sigma/2` | Learning rate (if not specified, it will be auto-set to `sigma/2`) |
 | `--reward-shaping` | `z-scores` | Reward normalization strategy |
 | `--population-size` | `30` | Number of perturbations per iteration |
 | `--n-iterations` | `300` | Total number of ES training iterations |
@@ -188,11 +188,11 @@ python es_at_scale/train.py \
 
 The batch is split into `ceil(batch_size / mini_batch_size)` chunks, processed one after another. There are three cases:
 
-- **`batch_size == mini_batch_size`** (default): one chunk — the whole batch is processed in a single pass. Highest memory.
-- **`batch_size > mini_batch_size`**: multiple chunks (e.g. batch 512, mini 128 → 4 passes of 128). Lower peak memory, more sequential passes.
-- **`batch_size < mini_batch_size`**: one chunk — the mini-batch is capped at the batch size, so it behaves exactly like the default.
+- **`batch-size == mini-batch-size`** (default): one chunk — the whole batch is processed in a single pass. Highest memory.
+- **`batch-size > mini-batch-size`**: multiple chunks (e.g. batch 512, mini 128 → 4 passes of 128). Lower peak memory, more sequential passes.
+- **`batch-size < mini-batch-size`**: one chunk — the mini-batch is capped at the batch size, so it behaves exactly like the default.
 
-**Evaluation batch size.** In `train.py`, evaluation uses `--mini-batch-size` as its batch size, since `--mini-batch-size` is already tuned to the largest batch that fits in memory without an OOM. Override it in `train.py` if you want to tune it independently.
+**Evaluation mini-batch size.** In `train.py`, evaluation uses the same mini-batch size as the `--mini-batch-size` in training, since `--mini-batch-size` should have already been tuned during training to the largest batch that fits in memory without an OOM.
 
 ### Fixed sampling parameters
 
@@ -288,15 +288,6 @@ With `--logging wandb`, the following are tracked:
 - Evaluation pass@1 metrics
 - ES hyperparameters
 - Throughput and rollout diagnostics
-
----
-
-## Performance Notes
-
-- ES scales nearly linearly with the number of GPUs (population parallelism)
-- No synchronization barriers from backpropagation
-- Ideal for **single-node multi-GPU** and **distributed Ray clusters**
-- Tune `--mini-batch-size` to balance memory usage and throughput
 
 ---
 
@@ -574,6 +565,15 @@ class MyTrainer(EvolutionStrategiesTrainer):
 ```
 
 Then instantiate `MyTrainer` instead of `EvolutionStrategiesTrainer` in `train.py`.
+
+---
+
+## Performance Notes
+
+- ES scales nearly linearly with the number of GPUs (population parallelism)
+- No synchronization barriers from backpropagation
+- Ideal for **single-node multi-GPU** and **distributed Ray clusters**
+- Tune `--mini-batch-size` to balance memory usage and throughput
 
 ---
 
