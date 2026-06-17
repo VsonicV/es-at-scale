@@ -262,6 +262,44 @@ python es_at_scale/train.py \
 
 ---
 
+## Outputs
+
+Each run produces a timestamped experiment directory:
+
+```
+experiments/
+└── es-finetuned-.../
+    ├── checkpoints/
+    ├── eval-output/
+    └── train-output/
+```
+
+### Checkpoints
+
+- The final model weights are always saved at the end of training as `checkpoint-es_fine_tuned_iteration_<N>/pytorch_model.pth`.
+- When `save_best_models=False` (the default), set to True to save each time a new best mean eval score is achieved during training. These are written to `checkpoints/<experiment_name>-mean<score>/pytorch_model.pth`. Default is `False` to save disk-space.
+- When `save_best_models=False`, only the final model is saved.
+
+### Logging
+
+With `--logging wandb`, the following are tracked:
+
+- Training reward statistics
+- Evaluation pass@1 metrics
+- ES hyperparameters
+- Throughput and rollout diagnostics
+
+---
+
+## Performance Notes
+
+- ES scales nearly linearly with the number of GPUs (population parallelism)
+- No synchronization barriers from backpropagation
+- Ideal for **single-node multi-GPU** and **distributed Ray clusters**
+- Tune `--mini-batch-size` to balance memory usage and throughput
+
+---
+
 ## Customization Guide: Dataset, Prompt Template, Reward Function, and Trainer
 
 This repo is designed so you can plug in **your own task + evaluator** without touching the ES core logic. At a minimum you provide:
@@ -539,60 +577,16 @@ Then instantiate `MyTrainer` instead of `EvolutionStrategiesTrainer` in `train.p
 
 ---
 
-## Outputs
-
-Each run produces a timestamped experiment directory:
-
-```
-experiments/
-└── es-finetuned-.../
-    ├── checkpoints/
-    ├── eval-output/
-    └── train-output/
-```
-
-### Checkpoints
-
-- The final model weights are always saved at the end of training as `checkpoint-es_fine_tuned_iteration_<N>/pytorch_model.pth`.
-- When `save_best_models=False` (the default), set to True to save each time a new best mean eval score is achieved during training. These are written to `checkpoints/<experiment_name>-mean<score>/pytorch_model.pth`. Default is `False` to save disk-space.
-- When `save_best_models=False`, only the final model is saved.
-
-### Logging
-
-With `--logging wandb`, the following are tracked:
-
-- Training reward statistics
-- Evaluation pass@1 metrics
-- ES hyperparameters
-- Throughput and rollout diagnostics
-
----
-
-## Performance Notes
-
-- ES scales nearly linearly with the number of GPUs (population parallelism)
-- No synchronization barriers from backpropagation
-- Ideal for **single-node multi-GPU** and **distributed Ray clusters**
-- Tune `--mini-batch-size` to balance memory usage and throughput
-
----
-
-## Entry Point
-
-`train.py` is a working example for math fine-tuning, not a general CLI. The real entry point for your own task is `EvolutionStrategiesTrainer` — see the [Customization Guide](#customization-guide-reward-function-prompt-template-and-trainer) for how to wire in your own reward function, prompt template, and data loader.
-
----
-
 ## Citation
 
 If you use ES-at-Scale in your research, please cite our paper:
 
 ```bibtex
-@article{Qiu2025EvolutionStrategies,
+@article{Qiu2026EvolutionStrategies,
   title={Evolution Strategies at Scale: {LLM} Fine-Tuning Beyond Reinforcement Learning},
   author={Qiu, Xin and Gan, Yulu and Hayes, Conor F. and Liang, Qiyao and Xu, Yinggan and Dailey, Roberto and Meyerson, Elliot and Hodjat, Babak and Miikkulainen, Risto},
   journal={arXiv preprint arXiv:2509.24372},
-  year={2025},
+  year={2026},
   eprint={2509.24372},
   archivePrefix={arXiv},
   primaryClass={cs.LG},
