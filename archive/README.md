@@ -4,7 +4,7 @@ This repo contains the source code for the paper "Evolution Strategies at Scale:
 Feel free to join the ES fine-tuning forum in [Discussions](https://github.com/VsonicV/es-fine-tuning-paper/discussions).
 
 ### News
-10/27/2025: :fire::fire::fire: An accelerated version with **10X+ speed-up** in running time is added to the repo!  See [here](https://github.com/VsonicV/es-fine-tuning-paper?tab=readme-ov-file#accelerated-version-10x-speed-up). :rocket::rocket::rocket:
+10/27/2025: :fire::fire::fire: An accelerated version with **10X+ speed-up** in running time is added to the repo!  See [here](https://github.com/VsonicV/es-at-scale/tree/main/archive#accelerated-version-10x-speed-up). :rocket::rocket::rocket:
 
 Note: we are still actively adding more experimental codes into this repo. We expect breaking change to the accelerated implementations.
 
