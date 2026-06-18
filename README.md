@@ -300,7 +300,7 @@ With `--logging wandb`, the following are tracked:
 
 ---
 
-## Customization Guide: Dataset, Prompt Template, Reward Function, and Trainer
+# Customization Guide: Dataset, Prompt Template, Reward Function, and Trainer
 
 This repo is designed so you can plug in **your own task + evaluator** without touching the ES core logic. At a minimum you provide:
 
