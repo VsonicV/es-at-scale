@@ -6,7 +6,7 @@
 
 ## Overview
 
-**ES-at-Scale** is an open-source framework for fine-tuning large language models using **Evolution Strategies (ES)** — a fully backpropagation-free, massively parallelizable alternative to RL-based training methods like PPO and GRPO.
+**ES-at-Scale** is an open-source framework for fine-tuning large language models using **Evolution Strategies (ES)** — a fully backpropagation-free, massively parallelizable alternative to RL-based training methods like PPO and GRPO. The implementation is based on the paper "Evolution Strategies at Scale: LLM Fine-Tuning Beyond Reinforcement Learning" (https://arxiv.org/abs/2509.24372).
 
 ES-at-Scale performs **direct optimization in the full parameter space**:
 - **No backpropagation**
@@ -15,6 +15,15 @@ ES-at-Scale performs **direct optimization in the full parameter space**:
 - **No dimensionality reduction or low-rank adapters**
 
 Training is built on **Ray** for distributed execution and **vLLM** for high-throughput inference, enabling efficient multi-GPU rollout evaluation at scale.
+
+Feel free to join the ES fine-tuning forum in [Discussions](https://github.com/VsonicV/es-fine-tuning-paper/discussions).
+
+For the older version of the codes that were used to generate the original experimental results in the paper, please see `/archive` (with corresponding documentations inside).
+
+### News
+06/18/2026: :fire::fire::fire: A new open-source library **ES-at-Scale** with an extensible interface and a more stable instrastructure is released! :rocket::rocket::rocket:
+
+10/27/2025: :fire::fire::fire: An accelerated version with **10X+ speed-up** in running time is added to the repo! :rocket::rocket::rocket:
 
 ---
 
