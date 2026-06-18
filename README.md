@@ -118,7 +118,7 @@ python es_at_scale/train.py \
   --model-name "Qwen/Qwen2.5-1.5B-Instruct" \
   --sigma 0.001 \
   --population-size 30 \
-  --n-iterations 300 \
+  --n-iterations 500 \
   --eval-freq 5 \
   --train-dataset "datasets/train/countdown" \
   --eval-dataset "datasets/evaluation_suite/countdown" \
@@ -143,7 +143,7 @@ python es_at_scale/train.py \
   --model-name "Qwen/Qwen2.5-Math-7B" \
   --sigma 0.001 \
   --population-size 30 \
-  --n-iterations 300 \
+  --n-iterations 500 \
   --eval-freq 5 \
   --train-dataset "datasets/train/math_lvl3to5_8k" \
   --eval-dataset "datasets/evaluation_suite/math/" \
