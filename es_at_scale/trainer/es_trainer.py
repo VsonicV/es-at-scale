@@ -617,7 +617,7 @@ class EvolutionStrategiesTrainer:
                     target_text=target_text,
                 )
 
-                if (iteration+1 % self.eval_freq) == 0 and (iteration > 0):
+                if ((iteration + 1) % self.eval_freq) == 0 and (iteration > 0):
                     self.eval_step(iteration=iteration)
 
                 total_iter_end = time.time()
