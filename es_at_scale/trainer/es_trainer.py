@@ -551,7 +551,7 @@ class EvolutionStrategiesTrainer:
             to_log.update(
                 {"global_step": iteration, f"eval/{name}/pass@1/mean": dataset_results}
             )
-            fn = f"{self.logging_dir}/eval-output/model_eval_task{name}_iteration{iteration}.json"
+            fn = f"{self.logging_dir}/eval-output/model_eval_task{name}_iteration{iteration+1}.json"
 
             print(f"saving model outputs at {fn}")
             json.dump(save_results, open(fn, "w"), indent=4)
@@ -617,7 +617,7 @@ class EvolutionStrategiesTrainer:
                     target_text=target_text,
                 )
 
-                if (iteration+1 % self.eval_freq) == 0 and (iteration > 0):
+                if ((iteration + 1) % self.eval_freq) == 0 and (iteration > 0):
                     self.eval_step(iteration=iteration)
 
                 total_iter_end = time.time()
