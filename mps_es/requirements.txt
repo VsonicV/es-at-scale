@@ -1,0 +1,23 @@
+# Dependencies for the mps_es module only.
+#
+# Deliberately NOT added to the repository's setup.py: the main package pins
+# vllm==0.11.0, which publishes no macOS wheel, so `pip install -e .` cannot
+# succeed on Apple Silicon. Install these into their own environment instead.
+
+torch>=2.6
+transformers>=4.57
+datasets>=2.14
+numpy>=1.24
+
+# math task: the repo's boxed-answer grader
+math-verify
+latex2sympy2_extended
+pylatexenc
+sympy
+
+# watcher
+typer>=0.12
+rich>=13
+
+# tests
+pytest>=7.0
